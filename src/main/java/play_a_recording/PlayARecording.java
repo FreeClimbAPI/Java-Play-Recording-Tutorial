@@ -39,6 +39,8 @@ public class PlayARecording {
     }
   }
 
+  // This the callback which should be specified in your persephony dashboard App
+  // Config under callConnectUrl
   @RequestMapping(value = {
       "/InboundCall" }, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
   public String inboundCall(@RequestBody String body) {
