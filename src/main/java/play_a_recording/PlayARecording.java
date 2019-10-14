@@ -17,7 +17,7 @@ import com.vailsys.persephony.percl.Play;
 @RestController
 public class PlayARecording {
   private static final String fromNumber = System.getenv("PERSEPHONY_PHONE_NUMBER");
-  private final String recordingUrl = "/Accounts/AC272d8570e9ae7cf7090da7cb5a5f45b48f786487/Recordings/REb0432826bc5ffb5af0da83cf697b7dc6e38911b3";
+  private final String recordingUrl = ""; // You must provide your own recording ID.
 
   public static void run() {
     String accountId = System.getenv("ACCOUNT_ID");
