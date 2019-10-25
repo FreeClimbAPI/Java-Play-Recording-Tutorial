@@ -6,21 +6,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.vailsys.persephony.api.PersyClient;
-import com.vailsys.persephony.api.PersyException;
-import com.vailsys.persephony.api.call.Call;
-import com.vailsys.persephony.api.call.CallStatus;
-import com.vailsys.persephony.percl.PerCLScript;
-import com.vailsys.persephony.webhooks.call.VoiceCallback;
-import com.vailsys.persephony.percl.Play;
+import com.vailsys.freeclimb.api.FreeClimbClient;
+import com.vailsys.freeclimb.api.FreeClimbException;
+import com.vailsys.freeclimb.api.call.Call;
+import com.vailsys.freeclimb.api.call.CallStatus;
+import com.vailsys.freeclimb.percl.PerCLScript;
+import com.vailsys.freeclimb.webhooks.call.VoiceCallback;
+import com.vailsys.freeclimb.percl.Play;
 
 @RestController
 public class PlayARecording {
-  private static final String fromNumber = System.getenv("PERSEPHONY_PHONE_NUMBER");
-  private final String recordingUrl = ""; // You must provide your own recording ID.
+  private static final String fromNumber = System.getenv("FREE_CLIMB_PHONE_NUMBER");
+  private static final String accountId = System.getenv("ACCOUNT_ID");
+  // TODO: You must provide your own recording ID.
+  private final String recordingUrl = "";
 
   public static void run() {
-    String accountId = System.getenv("ACCOUNT_ID");
     String authToken = System.getenv("AUTH_TOKEN");
     String applicationId = System.getenv("TUTORIAL_APPLICATION_ID");
     String toNumber = System.getenv("TO_PHONE_NUMBER");
@@ -30,16 +31,17 @@ public class PlayARecording {
 
   public static void outDial(String accountId, String authToken, String toNumber, String applicationId) {
     try {
-      // Create PersyClient object
-      PersyClient client = new PersyClient(accountId, authToken);
+      // Create FreeClimbClient object
+      FreeClimbClient client = new FreeClimbClient(accountId, authToken);
 
       Call call = client.calls.create(toNumber, fromNumber, applicationId);
-    } catch (PersyException ex) {
+    } catch (FreeClimbException ex) {
       // Exception throw upon failure
+      System.out.print(ex);
     }
   }
 
-  // This the callback which should be specified in your persephony dashboard App
+  // This the callback which should be specified in your FreeClimb dashboard App
   // Config under callConnectUrl
   @RequestMapping(value = {
       "/InboundCall" }, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -50,7 +52,7 @@ public class PlayARecording {
     try {
       // Convert JSON into call status call back object
       callStatusCallback = VoiceCallback.createFromJson(body);
-    } catch (PersyException pe) {
+    } catch (FreeClimbException pe) {
       // Do something with the failure to parse the request
       return script.toJson();
     }
