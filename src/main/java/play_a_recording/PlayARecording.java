@@ -18,8 +18,7 @@ import com.vailsys.freeclimb.percl.Play;
 public class PlayARecording {
   private static final String fromNumber = System.getenv("FREE_CLIMB_PHONE_NUMBER");
   private static final String accountId = System.getenv("ACCOUNT_ID");
-  // TODO: You must provide your own recording ID.
-  private final String recordingUrl = "";
+  private final String recordingUrl = ""; // Provide recording ID
 
   public static void run() {
     String authToken = System.getenv("AUTH_TOKEN");
